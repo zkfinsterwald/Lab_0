@@ -60,8 +60,34 @@ int main() {
     return 0;
 }
 
-void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interupt(){
+/* void __ISR(_TIMER_1_VECTOR, IPL7SRS) _T1Interupt(){
     IFS0bits.T1IF   = 0;
     
     if(PORTDbits.RD6 == 0) state = forwards;
+    }
+*/
+
+#define PRESSED     0
+#define SWITCH_1    PORTDbits.RD6   
+
+void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterupt(){
+    int count = 0;
+    IFS1bits.CNDIF  = 0; // Put down flag
+    if(SWITCH_1 == PRESSED )
+    {
+        TMR1            = 0;    // RESET CLOCK
+        IFS0bits.T1IF   = 0;    // PUT DOWN TIMER FLAG
+        T1CONbits.ON    = 1;    // TURN ON TIMER
+        while(SWITCH_1 == PRESSED)
+        {
+            if(IFS0bits.T1IF == 1) count++;
+        }
+        
+        if(count > 1)   state = backwards;
+        else            state = forwards;
+    }
+    else{
+        state = state;
+        T1CONbits.ON    = 0;
+    }
 }

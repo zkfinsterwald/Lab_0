@@ -12,6 +12,11 @@
 #define INPUT   1
 
 void initSW1(){
-    TRISDbits.TRISD6 = INPUT;
-    CNPUDbits.CNPUD6 = ENABLE;  // CONFIGURE INTERNAL PULL-UP RESISTOR
+    TRISDbits.TRISD6    = INPUT;
+    CNPUDbits.CNPUD6    = ENABLE;   // CONFIGURE INTERNAL PULL-UP RESISTOR
+    CNCONDbits.ON       = 1;        // Turn on CN for port D
+    CNENDbits.CNIED6    = 1;        // Enable CN for RD6
+    IFS1bits.CNDIF      = 0;        // Put down interrupt flag
+    IEC1bits.CNDIE      = 1;        // Enable Interrupt
+    IPC8bits.CNIP       = 7;        // Interrupt Priority
 }
