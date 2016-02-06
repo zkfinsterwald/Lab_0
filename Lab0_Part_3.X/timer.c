@@ -1,11 +1,12 @@
-/* 
- * File:   timer.c
- * Author: gvanhoy
- *
- * Created on August 27, 2015, 3:26 PM
+/*
+ * Zachary Finsterwald
+ * ECE 372A - LAB 0
+ * Due: February 5, 2016
+ * Part 3
  */
 
 #include <xc.h>
+#include "timer.h"
 
 #define PRESCALAR_256   3
 
@@ -14,7 +15,5 @@ void initTimer1(){
     T1CONbits.TCKPS = PRESCALAR_256;    // Configure ticking rate
     PR1             = 39061;            // 1 Sec - Period Register
     T1CONbits.ON    = 0;                // Turn off Timer
-    //IEC0bits.T1IE   = 1;                // Enable Interrupt
-    //IPC1bits.T1IP   = 7;                // Timer 1 priority
     IFS0bits.T1IF   = 0;                // Put down the interrupt flag
 }

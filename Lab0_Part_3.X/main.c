@@ -70,24 +70,26 @@ int main() {
 #define PRESSED     0
 #define SWITCH_1    PORTDbits.RD6   
 
+// Switch Press 
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL7SRS) _CNInterupt(){
-    int count = 0;
-    IFS1bits.CNDIF  = 0; // Put down flag
+    int seconds = 0;
+    IFS1bits.CNDIF  = 0;                        // Put down flag
     if(SWITCH_1 == PRESSED )
     {
-        TMR1            = 0;    // RESET CLOCK
-        IFS0bits.T1IF   = 0;    // PUT DOWN TIMER FLAG
-        T1CONbits.ON    = 1;    // TURN ON TIMER
+        TMR1            = 0;                    // RESET CLOCK
+        IFS0bits.T1IF   = 0;                    // PUT DOWN TIMER FLAG
+        T1CONbits.ON    = 1;                    // TURN ON TIMER
         while(SWITCH_1 == PRESSED)
         {
-            if(IFS0bits.T1IF == 1) count++;
+            if(IFS0bits.T1IF == 1) seconds++;   // USE THE INTERRUPT FLAG TO COUNT NUMBER OF SECONDS PRESSED
         }
         
-        if(count > 1)   state = backwards;
-        else            state = forwards;
+        if(seconds > 1) state = backwards;      // SWITCH PRESSED FOR LONGER THAN A SECOND, MOVE BACKWARDS
+        else            state = forwards;       // SWITCH PRESSED LESS THAN A SECOND, MOVE FORWARDS
     }
-    else{
-        state = state;
-        T1CONbits.ON    = 0;
+    else
+    {
+        state = state;                          // BUTTON NOT PRESSED, STAY IN SAME STATE
+        T1CONbits.ON    = 0;                    // KEEP TIMER OFF
     }
 }

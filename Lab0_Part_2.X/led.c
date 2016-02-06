@@ -1,8 +1,8 @@
-/* 
- * File:   led.c
- * Author: gvanhoy
- *
- * Created on August 27, 2015, 3:15 PM
+/*
+ * Zachary Finsterwald
+ * ECE 372A - LAB 0
+ * Due: February 5, 2016
+ * Part 2
  */
 
 #include <xc.h>
